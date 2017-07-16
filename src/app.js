@@ -40,7 +40,7 @@ class App {
 		// Send the email with the images
 		console.log('SENDING IMAGES...');
 		console.log(images);
-		// this.mailClient.sendMessage(images);
+		this.mailClient.sendMessage(images);
 		console.log();
 
 		setTimeout(this._doImageLoop.bind(this), this.config.frequency.howOften);
