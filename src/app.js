@@ -14,11 +14,17 @@ class App {
 		console.log('LONG TIME AGO');
 		console.log('-------------');
 
-		// Loop
-		// TODO this.config.frequency.howOften
+		this._doImageLoop();
+	}
+
+	_doImageLoop() {
+		console.log('LOOP CHECK: ', new Date());
+
+		// Fetch initial data
 		const today = new Date();
 		const baseImage = this.imageManager.getBaseImage(today);
 		const images = [ baseImage ];
+
 		if (this.config.images.includeAll) {
 			// Get all images that match the frequency unit until we don't find one
 			let curImage = this._getImage(today, this.config.frequency.unit);
@@ -31,8 +37,13 @@ class App {
 			images.push(this._getImage(today, this.config.frequency.unit));
 		}
 
-		// console.log(images);
-		this.mailClient.sendMessage(images);
+		// Send the email with the images
+		console.log('SENDING IMAGES...');
+		console.log(images);
+		// this.mailClient.sendMessage(images);
+		console.log();
+
+		setTimeout(this._doImageLoop.bind(this), this.config.frequency.howOften);
 	}
 
 	_getImage(date, unit, ignoreOffset) {
