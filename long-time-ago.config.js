@@ -5,21 +5,27 @@ const config = {
 		"to": [
 			""
 		],
-		"subject": ""
+		"subject": "Long Time Ago Email"
 	},
 	"smtp": {
-		"host": "",                             // https only
+		"host": "",
 		"port": "",
 		"user": "",
 		"password": ""
 	},
 	"frequency": {
-		"unit": ""                              // year, month, day
+		"unit": "year",                      // Time period between images to send
+		"howOften": 60 * 60                  // How often does the application check for new images
+	},
+	"baseDateOffset": {                      // Offset to subract from current date.  For sending images based on older dates instead of today
+		"value": 1,                          // Amount of offset to apply to current date
+		"unit": "day"                        // Unit of offset
 	},
 	"images": {
-		"path": "./path/with/slash/at/end/",    // must have slash at end
-		"format": "YYYY-MM-DD",                 // momentjs format
-		"extension": ".jpg"                     // extension including period
+		"path": "./path/to/images/",         // Must include trailing slash
+		"format": "YYYY-MM-DD",              // Moment.js format
+		"extension": ".jpg",                 // Must include period
+		"includeAll": true                   // Include all matches of images based on frequency unit
 	}
 }
 
