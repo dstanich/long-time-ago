@@ -14,6 +14,7 @@ class App {
 		console.log('LONG TIME AGO');
 		console.log('-------------');
 
+		this._lastSuccessfulBaseImage = undefined;
 		this._doImageLoop();
 	}
 
@@ -25,24 +26,31 @@ class App {
 		const baseImage = this.imageManager.getBaseImage(today);
 		const images = [ baseImage ];
 
-		if (this.config.images.includeAll) {
-			// Get all images that match the frequency unit until we don't find one
-			let curImage = this._getImage(today, this.config.frequency.unit);
-			while (curImage.exists()) {
-				images.push(curImage);
-				curImage = this._getImage(curImage.date, this.config.frequency.unit, true);
+		// Only do the loop if we have a new base image
+		if (!this._lastSuccessfulBaseImage || this._lastSuccessfulBaseImage.filename !== baseImage.filename) {
+			if (this.config.images.includeAll) {
+				// Get all images that match the frequency unit until we don't find one
+				let curImage = this._getImage(today, this.config.frequency.unit);
+				while (curImage.exists()) {
+					images.push(curImage);
+					curImage = this._getImage(curImage.date, this.config.frequency.unit, true);
+				}
+			} else {
+				// Fetch only the last image
+				images.push(this._getImage(today, this.config.frequency.unit));
 			}
+
+			// Send the email with the images
+			console.log('SENDING IMAGES...');
+			console.log(images);
+			this.mailClient.sendMessage(images);
+
+			this._lastSuccessfulBaseImage = baseImage;
 		} else {
-			// Fetch only the last image
-			images.push(this._getImage(today, this.config.frequency.unit));
+			console.log('NO NEW IMAGES');
 		}
 
-		// Send the email with the images
-		console.log('SENDING IMAGES...');
-		console.log(images);
-		this.mailClient.sendMessage(images);
 		console.log();
-
 		setTimeout(this._doImageLoop.bind(this), this.config.frequency.howOften);
 	}
 
