@@ -15,7 +15,7 @@ const config = {
 	},
 	"frequency": {
 		"unit": "year",                      // Time period between images to send
-		"howOften": 60 * 60 * 1000           // How often does the application check for new images (milliseconds)
+		"howOften": 60 * 60 * 5 * 1000       // How often does the application check for new images (milliseconds)
 	},
 	"baseDateOffset": {                      // Offset to subract from current date.  For sending images based on older dates instead of today
 		"value": 1,                          // Amount of offset to apply to current date
