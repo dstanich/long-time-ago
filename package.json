@@ -11,7 +11,8 @@
   "license": "MIT",
   "dependencies": {
     "moment": "^2.18.1",
-    "nodemailer": "^4.0.1"
+    "nodemailer": "^4.0.1",
+    "yargs": "^8.0.2"
   },
   "devDependencies": {
     "eslint": "^4.2.0",

@@ -29,6 +29,7 @@ class MailClient {
 				return console.error(error);
 			}
 			console.log('SendMail response: ', info);
+			console.log();
 		});
 	}
 

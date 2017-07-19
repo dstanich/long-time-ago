@@ -16,15 +16,21 @@ class App {
 
 		this._lastSuccessfulBaseImage = undefined;
 		this._doImageLoop();
+		this._doKeepAliveLoop();
 	}
 
 	_doImageLoop() {
-		console.log('LOOP CHECK: ', new Date());
+		console.log('LOOP CHECK: ', new Date().toISOString());
 
 		// Fetch initial data
 		const today = new Date();
 		const baseImage = this.imageManager.getBaseImage(today);
 		const images = [ baseImage ];
+
+		// If skip base image is set, set the previous to the base so we dont' send it
+		if (this.config.args.skipfirst) {
+			this._lastSuccessfulBaseImage = baseImage;
+		}
 
 		// Only do the loop if we have a new base image
 		if (!this._lastSuccessfulBaseImage || this._lastSuccessfulBaseImage.filename !== baseImage.filename) {
@@ -43,13 +49,14 @@ class App {
 			// Send the email with the images
 			console.log('SENDING IMAGES...');
 			console.log(images);
-			this.mailClient.sendMessage(images);
+			// this.mailClient.sendMessage(images);
 
 			this._lastSuccessfulBaseImage = baseImage;
 		} else {
 			console.log('NO NEW IMAGES');
 		}
 
+		console.log('WAITING ' + this.config.frequency.howOften / 1000 / 60 + ' minutes');
 		console.log();
 		setTimeout(this._doImageLoop.bind(this), this.config.frequency.howOften);
 	}
@@ -62,6 +69,12 @@ class App {
 		} else if (unit === 'day') {
 			return this.imageManager.getImageFromADayAgo(date, ignoreOffset);
 		}
+	}
+
+	// Required because some platforms (Raspberry Pi) will not work with long loop times.
+	// Keep alive will force things to work by pining it occasionally.
+	_doKeepAliveLoop() {
+		setInterval(() => {}, 10 * 60 * 1000);
 	}
 }
 
