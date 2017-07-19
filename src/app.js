@@ -27,8 +27,8 @@ class App {
 		const baseImage = this.imageManager.getBaseImage(today);
 		const images = [ baseImage ];
 
-		// If skip base image is set, set the previous to the base so we dont' send it
-		if (this.config.args.skipfirst) {
+		// If skip base image is set and we haven't started yet then skip the first image
+		if (this.config.args.skipfirst && !this._lastSuccessfulBaseImage) {
 			this._lastSuccessfulBaseImage = baseImage;
 		}
 
@@ -49,7 +49,7 @@ class App {
 			// Send the email with the images
 			console.log('SENDING IMAGES...');
 			console.log(images);
-			// this.mailClient.sendMessage(images);
+			this.mailClient.sendMessage(images);
 
 			this._lastSuccessfulBaseImage = baseImage;
 		} else {
