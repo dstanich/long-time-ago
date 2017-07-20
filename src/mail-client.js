@@ -1,5 +1,6 @@
 /* eslint-env node */
 const nodemailer = require('nodemailer');
+const moment = require('moment');
 
 class MailClient {
 	constructor(config) {
@@ -17,11 +18,12 @@ class MailClient {
 
 	sendMessage(images) {
 		const attachments = this._generateAttachments(images);
+		const dateString = moment(new Date()).format(this.config.images.format);
 		this.transporter.sendMail({
 			from: this.config.email.from,
 			to: this.config.email.to.join(','),
 			bcc: this.config.email.bcc.join(','),
-			subject: this.config.email.subject,
+			subject: this.config.email.subject + ' - ' + dateString,
 			html: this._generateHTML(attachments),
 			attachments: attachments
 
@@ -51,7 +53,8 @@ class MailClient {
 	_generateHTML(attachments) {
 		let html = '';
 		attachments.forEach(attachment => {
-			html += 'Date: ' + attachment.image.date + ' <img src="' + attachment.cid + '"><br/>';
+			const momentDate = moment(attachment.image.date);
+			html += 'Date: ' + momentDate.format(this.config.images.format) + ' <img src="' + attachment.cid + '"><br/>';
 		});
 		return html;
 	}

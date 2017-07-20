@@ -5,6 +5,9 @@ const config = {
 		"to": [
 			""
 		],
+		"bcc": [
+			""
+		],
 		"subject": "Long Time Ago Email"
 	},
 	"smtp": {
