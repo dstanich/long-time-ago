@@ -37,13 +37,11 @@ class MailClient {
 	}
 
 	_generateAttachments(images) {
-		const cidSuffix = new Date().getTime();
-		let attachments = [];
-		images.forEach((image, index) => {
+		const attachments = [];
+		images.forEach((image) => {
 			attachments.push({
 				filename: image.filename,
 				path: image.path + image.filename,
-				cid: 'cid:image-' + cidSuffix + index,
 				image: image
 			});
 		});
@@ -54,7 +52,7 @@ class MailClient {
 		let html = '';
 		attachments.forEach(attachment => {
 			const momentDate = moment(attachment.image.date);
-			html += 'Date: ' + momentDate.format(this.config.images.format) + ' <img src="' + attachment.cid + '"><br/>';
+			html += 'Date: ' + momentDate.format(this.config.images.format) + '<br/>';
 		});
 		return html;
 	}
