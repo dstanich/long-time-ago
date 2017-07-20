@@ -20,6 +20,7 @@ class MailClient {
 		this.transporter.sendMail({
 			from: this.config.email.from,
 			to: this.config.email.to.join(','),
+			bcc: this.config.email.bcc.join(','),
 			subject: this.config.email.subject,
 			html: this._generateHTML(attachments),
 			attachments: attachments
