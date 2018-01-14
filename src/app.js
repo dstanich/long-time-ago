@@ -36,14 +36,14 @@ class App {
 		if (!this._lastSuccessfulBaseImage || this._lastSuccessfulBaseImage.filename !== baseImage.filename) {
 			if (this.config.images.includeAll) {
 				// Get all images that match the frequency unit until we don't find one
-				let curImage = this._getImage(today, this.config.frequency.unit);
+				let curImage = this.imageManager.getImageFromXXAgo(today, this.config.frequency.unit, this.config.frequency.value);
 				while (curImage.exists()) {
 					images.push(curImage);
-					curImage = this._getImage(curImage.date, this.config.frequency.unit, true);
+					curImage = this.imageManager.getImageFromXXAgo(curImage.date, this.config.frequency.unit, this.config.frequency.value, true);
 				}
 			} else {
 				// Fetch only the last image
-				images.push(this._getImage(today, this.config.frequency.unit));
+				images.push(this.imageManager.getImageFromXXAgo(today, this.config.frequency.unit, this.config.frequency.value));
 			}
 
 			// Send the email with the images
@@ -59,16 +59,6 @@ class App {
 		console.log('WAITING ' + this.config.frequency.howOften / 1000 / 60 + ' minutes');
 		console.log();
 		setTimeout(this._doImageLoop.bind(this), this.config.frequency.howOften);
-	}
-
-	_getImage(date, unit, ignoreOffset) {
-		if (unit === 'year') {
-			return this.imageManager.getImageFromAYearAgo(date, ignoreOffset);
-		} else if (unit === 'month') {
-			return this.imageManager.getImageFromAMonthAgo(date, ignoreOffset);
-		} else if (unit === 'day') {
-			return this.imageManager.getImageFromADayAgo(date, ignoreOffset);
-		}
 	}
 
 	// Required because some platforms (Raspberry Pi) will not work with long loop times.

@@ -17,6 +17,7 @@ const config = {
 		"password": ""
 	},
 	"frequency": {
+		"value": 1,                          // Number of units
 		"unit": "year",                      // Time period between images to send
 		"howOften": 60 * 60 * 5 * 1000       // How often does the application check for new images (milliseconds)
 	},

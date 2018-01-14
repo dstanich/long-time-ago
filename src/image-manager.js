@@ -8,31 +8,19 @@ class ImageManager {
 	}
 
 	getBaseImage(/*date*/originDate) {
-		return this._getImageFromXXAgo(originDate);
+		return this.getImageFromXXAgo(originDate);
 	}
 
-	getImageFromADayAgo(/*date*/originDate, /*boolean*/ignoreOffset) {
-		return this._getImageFromXXAgo(originDate, 'day', ignoreOffset);
-	}
-
-	getImageFromAMonthAgo(/*date*/originDate, /*boolean*/ignoreOffset) {
-		return this._getImageFromXXAgo(originDate, 'month', ignoreOffset);
-	}
-
-	getImageFromAYearAgo(/*date*/originDate, /*boolean*/ignoreOffset) {
-		return this._getImageFromXXAgo(originDate, 'year', ignoreOffset);
-	}
-
-	_getImageFromXXAgo(/*date*/originDate, /*string*/unit, /*boolean*/ignoreOffset) {
-		// Subtract the bsae offset, if defined and not ignored
+	getImageFromXXAgo(/*date*/originDate, /*string*/unit, /*int*/value, /*boolean*/ignoreOffset) {
+		// Subtract the base offset, if defined and not ignored
 		let date = moment(originDate);
 		if (!ignoreOffset && this.config.baseDateOffset.value && this.config.baseDateOffset.unit) {
 			date = date.subtract(this.config.baseDateOffset.value, this.config.baseDateOffset.unit);
 		}
-
+		console.log(originDate, unit, value);
 		// Subtract the frequency unit, if defined
 		if (unit) {
-			date = date.subtract(1, unit);
+			date = date.subtract(value, unit);
 		}
 
 		// Create and return the image
