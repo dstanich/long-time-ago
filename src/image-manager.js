@@ -17,7 +17,7 @@ class ImageManager {
 		if (!ignoreOffset && this.config.baseDateOffset.value && this.config.baseDateOffset.unit) {
 			date = date.subtract(this.config.baseDateOffset.value, this.config.baseDateOffset.unit);
 		}
-		console.log(originDate, unit, value);
+
 		// Subtract the frequency unit, if defined
 		if (unit) {
 			date = date.subtract(value, unit);
