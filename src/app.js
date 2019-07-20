@@ -66,8 +66,41 @@ class App {
 
       // Send the email with the images
       console.log('SENDING IMAGES...');
-      console.log(images);
-      this.mailClient.sendMessage(images);
+
+      // Check to see if we need to resize images
+      new Promise(resolve => {
+        // No resize
+        if (
+          !this.config.resizePercentage ||
+          !this.config.resizePercentage.size ||
+          !this.config.resizePercentage.tmpDir
+        ) {
+          resolve();
+          return;
+        }
+
+        // Reduce file sizes; alter each image object
+        const resizePromises = [];
+        images.forEach(image => {
+          resizePromises.push(
+            this.imageManager.resizeImage(
+              image,
+              this.config.resizePercentage.size
+            )
+          );
+        });
+
+        // Wait for all resize events, then send the files
+        return Promise.all(resizePromises).then(() => resolve());
+      })
+        .catch(err => {
+          console.error('Error resizing images');
+          console.error(err);
+        })
+        .then(() => {
+          console.log(images);
+          this.mailClient.sendMessage(images);
+        });
 
       this._lastSuccessfulBaseImage = baseImage;
     } else {

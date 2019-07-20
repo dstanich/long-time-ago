@@ -1,5 +1,7 @@
 /* eslint-env node */
 const moment = require('moment');
+const gm = require('gm').subClass({ imageMagick: true });
+
 const Image = require('./image');
 
 class ImageManager {
@@ -39,6 +41,26 @@ class ImageManager {
     let filename =
       date.format(this.config.images.format) + this.config.images.extension;
     return new Image(filename, this.config.images.path, date.toDate());
+  }
+
+  resizeImage(/*Image*/ image, /*string*/ percentage) {
+    return new Promise((resolve, reject) => {
+      try {
+        const newFilename = `${this.config.resizePercentage.tmpDir}${image.filename}`;
+        gm(`${image.path}${image.filename}`)
+          .autoOrient()
+          .resize(percentage)
+          .write(newFilename, error => {
+            if (error) {
+              throw error;
+            }
+            image.path = this.config.resizePercentage.tmpDir;
+            resolve();
+          });
+      } catch (err) {
+        reject(err);
+      }
+    });
   }
 
   static getInstance(config) {

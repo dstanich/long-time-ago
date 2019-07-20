@@ -27,6 +27,10 @@ const config = {
     format: 'YYYY-MM-DD', // Moment.js format
     extension: '.jpg', // Must include period
     includeAll: true // Include all matches of images based on frequency unit
+  },
+  resizePercentage: {
+    size: '40%', // String representing the percentage to resize to (include %)
+    tmpDir: './tmp/resized' // Temp directory to export resize pics to
   }
 };
 
