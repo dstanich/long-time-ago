@@ -1,4 +1,5 @@
 /* eslint-env node */
+const fs = require('fs');
 const moment = require('moment');
 const gm = require('gm').subClass({ imageMagick: true });
 
@@ -46,13 +47,19 @@ class ImageManager {
   resizeImage(/*Image*/ image, /*string*/ percentage) {
     return new Promise((resolve, reject) => {
       try {
+        // Ensure folder exists
+        if (!fs.existsSync(this.config.resizePercentage.tmpDir)) {
+                fs.mkdirSync(this.config.resizePercentage.tmpDir, { recursive: true });
+        }
+
         const newFilename = `${this.config.resizePercentage.tmpDir}${image.filename}`;
         gm(`${image.path}${image.filename}`)
-          .autoOrient()
-          .resize(percentage)
+          .autoOrient().resize(percentage)
           .write(newFilename, error => {
             if (error) {
-              throw error;
+              
+		console.log(error);
+		throw error;
             }
             image.path = this.config.resizePercentage.tmpDir;
             resolve();
