@@ -39,7 +39,7 @@ The container assumes that the config file is named `long-time-ago.config.js` an
 1.  `cd long-time-ago`
 1.  Build the image: `docker build -t YOUR_NAME/long-time-ago:1.0.0 .`
 1.  Create a Docker volume: `docker create volume VOLUME_NAME`
-1.  Run the container: `docker run -d -v VOLUME_NAME:/data --name=NAME_OF_CONTAINER YOUR_NAME/long-time-ago:1.0.0`
+1.  Run the container: `docker run -d -v VOLUME_NAME:/data --name=NAME_OF_CONTAINER -e TZ=YOUR_TIMEZONE(ex:America/Chicago) YOUR_NAME/long-time-ago:1.0.0`
 1.  Check logs if desired: `docker logs NAME_OF_CONTAINER`
 
 
