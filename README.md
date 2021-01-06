@@ -33,7 +33,7 @@ Configuation values are described in comments in the `long-time-ago.config.js` f
 ## Using Docker
 `long-time-ago` can be run within a Docker container if desired.  The image is not yet published to DockerHub, however the `Dockerfile` is located in this repo and can be downloaded, built, and run locally.
 
-The container assumes that the config file is named `long-time-ago.config.js` and is located in the `/data` directory inside the container.  A directory/volume should be provided when starting that contains this.  You can override the name path by setting the `CONFIG_FILE` environment variable.
+The container assumes that the config file is named `long-time-ago.config.js` and is located in the `/data` directory inside the container.  A directory/volume should be provided when starting that contains this.  You can override the name path by setting the `CONFIG_FILE` environment variable.  The timezone is also important since the container will default to UTC which may trigger checking for images earlier/later than desired.  The timezone can be set in Docker using the `TZ` environment variable (command example below).
 
 1.  Clone repo
 1.  `cd long-time-ago`
