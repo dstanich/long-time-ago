@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "gm": "^1.23.1",
-    "moment": "^2.18.1",
+    "moment": "^2.29.2",
     "nodemailer": "^4.0.1",
     "yargs": "^8.0.2"
   },
